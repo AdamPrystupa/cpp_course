@@ -51,6 +51,7 @@ int main() {
   }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   //   auto found = std::ranges::search(v, std::vector{6, 6});
   //   if (!found.empty()) {
@@ -61,5 +62,7 @@ int main() {
   //   }
 
 >>>>>>> fa76a0a (learning algorithms)
+=======
+>>>>>>> refs/remotes/origin/main
   return 0;
 }
