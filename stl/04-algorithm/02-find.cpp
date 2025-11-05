@@ -50,9 +50,12 @@ int main() {
     std::cout << "znaleziono\n";
   }
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
+=======
+>>>>>>> Stashed changes
   //   auto found = std::ranges::search(v, std::vector{6, 6});
   //   if (!found.empty()) {
   //     for (const auto element : found) {
@@ -61,8 +64,11 @@ int main() {
   //     std::cout << "\n";
   //   }
 
+<<<<<<< Updated upstream
 >>>>>>> fa76a0a (learning algorithms)
 =======
 >>>>>>> refs/remotes/origin/main
+=======
+>>>>>>> Stashed changes
   return 0;
 }
