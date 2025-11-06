@@ -32,12 +32,11 @@ int main() {
   }
   printDeque(d);
 
-  auto it = d.cbegin();
-  auto it2 = d.cbegin();
-  auto it3 = d.cbegin();
+  auto it = d.begin();
   std::advance(it, 3);
   d.erase(it);
 
+  auto it2 = d.begin();
   std::advance(it2, 1);
   d.erase(it2);
 
@@ -46,6 +45,7 @@ int main() {
 
   printDeque(d);
 
+  auto it3 = d.begin();
   std::advance(it3, 3);
   d.insert(it3, 20);
 
