@@ -124,9 +124,9 @@ auto gen = [index = 1]() mutable {
 };
 
 auto comp = [](auto element1, auto element2) {
-  if (element2 == 1)
+  if (element2 == 1) {
     return element1;
-  else
+  } else
     return 0;
 };
 
