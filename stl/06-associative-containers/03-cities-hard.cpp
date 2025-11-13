@@ -28,18 +28,9 @@ struct Point {
   int y;
 };
 
-bool operator<(const Point &a, const Point &b) {
-  return std::sqrt(a.x * a.x + a.y * a.y) < std::sqrt(b.x * b.x + b.y * b.y);
-}
+double radius(Point point) { return std::sqrt(point.x ^ 2 + point.y ^ 2); }
 
-bool checkDistance(const std::map<Point, std::string> &map,
-                   const int &distance) {
-  for (auto &[point, cityName] : map) {
-    if (std::sqrt(point.x * point.x + point.y * point.y) == distance)
-      return true;
-  }
-  return false;
-}
+bool operator<(const Point &a, const Point &b) { return radius(a) < radius(b); }
 
 void checkCoordinates(const std::map<Point, std::string> &map,
                       const std::string &city) {
@@ -62,6 +53,14 @@ int main() {
                                    {{151, -33}, "Sydney"},
                                    {{70, 0}, "Strzyżów"}};
 
-  std::cout << (checkDistance(map, 70) ? "true\n" : "false\n");
+  auto checkIfLE70 = [](auto coord, auto city) {
+    if (radius(coord) <= 70) {
+      std::cout << city << "\n";
+    }
+  };
+
+  for (const auto &[coord, city] : map) {
+    checkIfLE70(coord, city);
+  }
   checkCoordinates(map, "Sydney");
 }
