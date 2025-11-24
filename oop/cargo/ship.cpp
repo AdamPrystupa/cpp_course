@@ -17,7 +17,7 @@ void Ship::setName(const std::string &name) {
   }
 }
 
-unsigned int Ship::getId() const { return id_; }
+int Ship::getId() const { return id_; }
 std::string Ship::getName() const { return name_; }
 double Ship::getSpeed() const { return speed_; }
 unsigned int Ship::getMaxCrew() const { return maxCrew_; }
@@ -39,4 +39,21 @@ void Ship::printShip() const {
   std::cout << "Ship maxCrew: " << this->getMaxCrew() << "\n";
   std::cout << "Ship capacity: " << this->getCapacity() << "\n";
   std::cout << "Ship crew: " << this->crew_ << "\n\n";
+};
+
+void Ship::load(std::shared_ptr<Cargo> cargo) { cargos.push_back(cargo); };
+void Ship::unload(Cargo *cargo) {
+  auto cargoToRemove =
+      std::find_if(begin(cargos), end(cargos),
+                   [cargo](auto el) { return cargo == el.get(); });
+  cargos.erase(cargoToRemove);
+};
+
+void Ship::printCargos() const {
+  for (const auto &el : cargos) {
+    std::cout << "Name:" << el.get()->getName() << "\n";
+    std::cout << "Amount: " << el.get()->getAmount() << "\n";
+    std::cout << "Base Price: " << el.get()->getBasePrice() << "\n";
+    std::cout << "Price:  " << el.get()->getPrice() << "\n\n";
+  }
 };
