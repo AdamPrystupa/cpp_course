@@ -76,6 +76,7 @@ mocy alkoholu. Należy ustalić bazową cenę za spirytus 96%.
 Klasa Item powinna mieć dodatkową zmienną enum określającą rzadkość przedmiotu
 (common, rare, epic, legendary). Metoda getPrice() powinna być adekwatnie
 wyliczana od poziomu rzadkości przedmiotu.
+
 Zadanie 6
 
 Wykorzystując wspólną klasę bazową Cargo spróbuj przechowywać wszystkie towary w
@@ -83,10 +84,35 @@ jednym wektorze w klasie Ship.
 
 Dodaj funkcję void load(std::shared_ptr<Cargo> cargo), która dodaje towar i (dla
 chętnych) void unload(Cargo* cargo), która usuwa towar z obiektu klasy Ship.
+
+
+Zadanie 7
+
+Napisz klasę DryFruit, która dziedziczyć będzie po klasie Fruit.
+
+Klasa ta powinna nadpisywać metody getPrice(), getName() oraz operator--.
+
+operator-- powinien odejmować zużycie raz na 10 wywołań.
+
+Metoda getPrice() powinna zwracać trzykrotnie większą wartość w porównaniu do
+ceny bazowej.
+
+Zadanie 8
+
+Napisz/przekształć klasę Coordinates, która ma określać współrzędne na mapie.
+Powinna ona przyjmować w konstruktorze 2 parametry positionX, positionY. Klasa
+Coordinates powinna też posiadać operator porównania.
+
+Ma ona także posiadać funkcję statyczną distance:
+
+static size_t distance(const Coordinates& lhs, const Coordinates& rhs)
+
+Funkcja ta powinna zwracać dystans pomiędzy dwoma pozycjami.
 */
 
 #include "alcohol.hpp"
 #include "cargo.hpp"
+#include "dryfruit.hpp" // <--- Dodano nagłówek
 #include "fruit.hpp"
 #include "item.hpp"
 #include "ship.hpp"
@@ -107,89 +133,104 @@ int main() {
   // ---------------------------------------------------------
   printHeader("Tworzenie Statku");
 
-  // ID: 1, Nazwa: Czarna Perla, Speed: 50, MaxCrew: 100, Capacity: 1000, Crew:
-  // 20
   Ship myShip(1, "Czarna Perla", 50.0, 100, 1000.0, 20);
   myShip.printShip();
 
   // ---------------------------------------------------------
-  // 2. Tworzenie Towarów (Cargo)
+  // 2. Tworzenie Towarów (Cargo) - Fruit, Alcohol, Item
   // ---------------------------------------------------------
   printHeader("Tworzenie Towarow i Logika Cen");
 
   // --- FRUIT ---
   std::string fruitName = "Jablka";
-  // Cena bazowa: 20, Ilość: 100. willGoBad domyślnie 7.
-  // Uwaga: Zakładam, że poprawiłeś kolejność w konstruktorze Fruit na (name,
-  // basePrice, amount)
+  // Cena bazowa: 20, Ilość: 100
   auto apple = std::make_shared<Fruit>(fruitName, 20, 100);
 
-  // Psujemy owoc o 4 dni (zostanie 3 dni świeżości)
-  // Wzór: cena - (7 - willGoBad) * 0.5
-  // willGoBad = 3. Różnica = 4. Obniżka = 4 * 0.5 = 2. Nowa cena = 18.
-  -*apple;
-  -*apple;
-  -*apple;
-  -*apple;
+  // Psujemy owoc o 4 dni
+  // Używamy operatora zdefiniowanego w Fruit (zakładamy operator- lub -- w
+  // zależności od Twojej implementacji) W Twoim fruit.cpp był operator-, więc
+  // używamy zapisu -(*ptr)
+  --*apple;
+  --*apple;
+  --*apple;
+  --*apple;
   std::cout << "Owoc (po 4 dniach): " << apple->getName()
-            << " | Cena wyliczona: " << apple->getPrice()
-            << " (Oczekiwana: 18)\n";
+            << " | Cena: " << apple->getPrice() << " (Oczekiwana: 18)\n";
 
   // --- ALCOHOL ---
   std::string alcoholName = "Rum";
   // Ilość: 50, Cena bazowa: 100, Moc: 40%
   auto rum = std::make_shared<Alcohol>(alcoholName, 50, 100, 40);
 
-  // Wzór: basePrice - (96 - alcoholContent) * 0.5
-  // 100 - (96 - 40) * 0.5 = 100 - (56 * 0.5) = 100 - 28 = 72.
   std::cout << "Alkohol (40%): " << rum->getName()
-            << " | Cena wyliczona: " << rum->getPrice()
-            << " (Oczekiwana: 72)\n";
+            << " | Cena: " << rum->getPrice() << " (Oczekiwana: 72)\n";
 
   // --- ITEM ---
   std::string itemName = "Miecz";
-  // Ilość: 1, Cena bazowa: 200, Rarity: Rare (zakładamy int(Rare) == 1)
-  // Musisz mieć 'enum class Rarity' w sekcji PUBLIC w item.hpp!
+  // Ilość: 1, Cena bazowa: 200, Rarity: Rare
   auto sword = std::make_shared<Item>(itemName, 1, 200, Item::Rarity::rare);
 
-  // Wzór: basePrice + (0.15 * basePrice) * rarity
-  // 200 + (30 * 1) = 230.
   std::cout << "Przedmiot (Rare): " << sword->getName()
-            << " | Cena wyliczona: " << sword->getPrice()
-            << " (Oczekiwana: 230)\n";
+            << " | Cena: " << sword->getPrice() << " (Oczekiwana: 230)\n";
 
   // ---------------------------------------------------------
-  // 3. Ładowanie na statek (load)
+  // 3. Testowanie DryFruit (Suszone Owoce)
+  // ---------------------------------------------------------
+  printHeader("Logika DryFruit");
+
+  std::string dryFruitName = "Sliwki";
+  // Cena bazowa: 30, Ilość: 50.
+  // DryFruit dziedziczy po Fruit, ale nadpisuje getPrice -> 3 * basePrice
+  auto dryPlum = std::make_shared<DryFruit>(dryFruitName, 50, 30);
+
+  // Test getName() - powinno dodać "Suszone "
+  std::cout << "Nazwa: " << dryPlum->getName()
+            << " (Oczekiwane: Suszone Sliwki)\n";
+
+  // Test getPrice() - powinno być 3 * 30 = 90
+  std::cout << "Cena: " << dryPlum->getPrice() << " (Oczekiwane: 90)\n";
+
+  // Test operatora-- (dekrementacja co 10 wywołań)
+  // Uwaga: Ponieważ DryFruit::getPrice() zwraca stałą wartość (3 * base),
+  // psucie się nie wpłynie na cenę w tej implementacji, ale sprawdzamy czy kod
+  // się kompiluje i działa.
+  std::cout << "Symulacja uplywu czasu (20 cykli)...\n";
+  for (int i = 0; i < 20; ++i) {
+    --(*dryPlum); // Używamy operatora dekrementacji (zgodnie z poleceniem dla
+                  // DryFruit)
+  }
+  std::cout << "Cena po uplywie czasu: " << dryPlum->getPrice()
+            << " (Nadal 90 - specyfika DryFruit)\n";
+
+  // ---------------------------------------------------------
+  // 4. Ładowanie na statek (load)
   // ---------------------------------------------------------
   printHeader("Ladowanie towarow (load)");
 
   myShip.load(apple);
-  std::cout << "-> Zaladowano Jablka\n";
   myShip.load(rum);
-  std::cout << "-> Zaladowano Rum\n";
   myShip.load(sword);
-  std::cout << "-> Zaladowano Miecz\n";
+  myShip.load(dryPlum); // Ładujemy też suszone owoce
+  std::cout << "-> Zaladowano wszystkie towary (w tym suszone).\n";
 
   // ---------------------------------------------------------
-  // 4. Test nowej funkcji printCargos()
+  // 5. Zawartość ładowni
   // ---------------------------------------------------------
   printHeader("ZAWARTOSC LADOWNI (Ship::printCargos)");
 
-  // To wywoła Twoją nową pętlę for-each
-  myShip.printCargos(); // Upewnij się, że w .hpp nazwałeś to printCargos, a nie
-                        // pritnCargos ;)
+  // Tutaj sprawdzimy, czy polimorfizm działa dla DryFruit (czy wypisze poprawną
+  // nazwę i cenę)
+  myShip.printCargos();
 
   // ---------------------------------------------------------
-  // 5. Rozładunek (unload) i weryfikacja
+  // 6. Rozładunek
   // ---------------------------------------------------------
   printHeader("Rozladunek (unload: Rum)");
 
-  // Usuwamy Rum ze statku
   myShip.unload(rum.get());
   std::cout << "-> Usunieto Rum.\n";
 
   std::cout << "\n--- Ladownia po rozladunku ---\n";
-  // Powinny zostać tylko Jabłka i Miecz
   myShip.printCargos();
 
   return 0;

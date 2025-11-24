@@ -5,7 +5,7 @@ Fruit::Fruit(std::string &name, size_t amount, size_t basePrice)
 
 Fruit::~Fruit() {}
 
-Fruit &Fruit::operator-() {
+Fruit &Fruit::operator--() {
   willGoBad--;
   return *this;
 }

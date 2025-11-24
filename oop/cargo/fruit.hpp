@@ -6,11 +6,11 @@
 #include <string>
 
 class Fruit : public Cargo {
-private:
+protected:
   size_t willGoBad;
 
 public:
-  Fruit &operator-();
+  virtual Fruit &operator--();
   Fruit(std::string &name, size_t amount, size_t basePrice);
   ~Fruit();
 
