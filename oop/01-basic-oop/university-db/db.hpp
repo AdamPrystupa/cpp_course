@@ -2,33 +2,24 @@
 #define DB_HPP
 
 #include "student.hpp"
+#include <algorithm>
 #include <iostream>
+#include <vector>
 
 class DB {
 private:
-  /* data */
+  std::vector<Student> db;
+
 public:
-  DB(/* args */);
+  DB();
   ~DB();
+  void addNewStudent(const Student &newStudent);
+  void printDB();
+  void searchBySurname(const std::string &surname);
+  void searchByID(const size_t ID);
+  void sortByID();
+  void sortBySurname();
+  void removeByName(const std::string &name);
 };
-
-// Przechowywanie rekordów studentów o strukturze
-//     : Imię,
-//       nazwisko,
-//       adres,
-//       nr_indeksu,
-//       PESEL,
-//       płeć
-//     Dodawanie nowych studentów
-//     Wyświetlanie całej bazy danych
-//     Wyszukiwanie po nazwisku
-//     Wyszukiwanie po numerze PESEL
-//     Sortowanie po numerze PESEL
-//     Sortowanie po nazwisku
-//     Usuwanie po numerze indeksu
-
-DB::DB(/* args */) {}
-
-DB::~DB() {}
 
 #endif
