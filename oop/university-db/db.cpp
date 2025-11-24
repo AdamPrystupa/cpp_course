@@ -5,20 +5,20 @@ DB::~DB(){};
 
 void DB::addNewStudent(const Student &newStudent) { db.push_back(newStudent); }
 void DB::printDB() {
-  for (auto el : db) {
+  for (const auto &el : db) {
     el.printStudent();
   }
 };
 
 void DB::searchBySurname(const std::string &surname) {
-  for (auto el : db) {
+  for (const auto &el : db) {
     if (el.getSurname() == surname)
       el.printStudent();
   }
 };
 
 void DB::searchByID(const size_t ID) {
-  for (auto el : db) {
+  for (const auto &el : db) {
     if (el.getID() == ID)
       el.printStudent();
   }
