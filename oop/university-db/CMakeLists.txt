@@ -20,6 +20,9 @@ add_executable(UniversityDB
     db.cpp
     main.cpp
     student.cpp
+    worker.cpp
+    person.cpp
+    generator.cpp
 )
 
 # Wskazanie katalogów, w których kompilator ma szukać plików nagłówkowych (.hpp)
